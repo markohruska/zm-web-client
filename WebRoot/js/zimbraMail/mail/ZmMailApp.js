@@ -153,6 +153,8 @@ function(settings) {
 	settings.registerSetting("ALLOW_ANY_FROM_ADDRESS",			{name:"zimbraAllowAnyFromAddress", type:ZmSetting.T_COS, dataType:ZmSetting.D_BOOLEAN, defaultValue:false});
     settings.registerSetting("AUTO_READ_RECEIPT_ENABLED",		{name:"zimbraPrefMailRequestReadReceipts", type:ZmSetting.T_PREF, dataType:ZmSetting.D_BOOLEAN, defaultValue:false});
 	settings.registerSetting("AUTO_SAVE_DRAFT_INTERVAL",		{name:"zimbraPrefAutoSaveDraftInterval", type:ZmSetting.T_PREF, dataType:ZmSetting.D_LDAP_TIME, defaultValue:ZmMailApp.DEFAULT_AUTO_SAVE_DRAFT_INTERVAL, isGlobal:true});
+	settings.registerSetting("CHANGE_USE_IMAP_ENABLED",			{name:"zimbraFeatureChangeUseImapEnabled", type:ZmSetting.T_COS, dataType:ZmSetting.D_BOOLEAN, defaultValue:false});
+	settings.registerSetting("CHANGE_USE_POP_ENABLED",			{name:"zimbraFeatureChangeUsePop3Enabled", type:ZmSetting.T_COS, dataType:ZmSetting.D_BOOLEAN, defaultValue:false});
     settings.registerSetting("COLLAPSE_IMAP_TREES",				{type:ZmSetting.T_COS, dataType:ZmSetting.D_BOOLEAN, defaultValue:false});
 	settings.registerSetting("COLOR_MESSAGES",					{name:"zimbraPrefColorMessagesEnabled", type:ZmSetting.T_PREF, dataType:ZmSetting.D_BOOLEAN, defaultValue: false, isGlobal:true});
 	settings.registerSetting("COMPOSE_SAME_FORMAT",				{name:"zimbraPrefForwardReplyInOriginalFormat", type:ZmSetting.T_PREF, dataType:ZmSetting.D_BOOLEAN, defaultValue:false, isGlobal:true});
@@ -178,6 +180,7 @@ function(settings) {
 	settings.registerSetting("HIGHLIGHT_OBJECTS",               {name:"zimbraMailHighlightObjectsMaxSize", type:ZmSetting.T_COS, dataType:ZmSetting.D_INT, defaultValue:70});
 	settings.registerSetting("HTML_SIGNATURE_ENABLED",			{type:ZmSetting.T_PREF,dataType:ZmSetting.D_BOOLEAN,defaultValue:true});
 	settings.registerSetting("IDENTITIES_ENABLED",				{name:"zimbraFeatureIdentitiesEnabled", type:ZmSetting.T_COS, dataType:ZmSetting.D_BOOLEAN, defaultValue:true});
+	settings.registerSetting("IMAP_ENABLED",					{name:"zimbraImapEnabled", type:ZmSetting.T_COS, dataType:ZmSetting.D_BOOLEAN, defaultValue:!appCtxt.isOffline});
 	settings.registerSetting("INITIAL_SEARCH",					{name:"zimbraPrefMailInitialSearch", type:ZmSetting.T_PREF, defaultValue:"in:inbox"});
 	settings.registerSetting("INITIAL_SEARCH_ENABLED",			{name:"zimbraFeatureInitialSearchPreferenceEnabled", type:ZmSetting.T_COS, dataType:ZmSetting.D_BOOLEAN, defaultValue:false});
 	settings.registerSetting("MAIL_ATTACH_VIEW_ENABLED",		{type:ZmSetting.T_COS, dataType:ZmSetting.D_BOOLEAN, defaultValue:false});
@@ -251,6 +254,8 @@ function(settings) {
 	settings.registerSetting("SIGNATURE_STYLE",					{name:"zimbraPrefMailSignatureStyle", type:ZmSetting.T_PREF, defaultValue:ZmSetting.SIG_OUTLOOK});
 	settings.registerSetting("START_DATE_ENABLED",				{type:ZmSetting.T_PREF, dataType:ZmSetting.D_BOOLEAN, defaultValue:false});
     settings.registerSetting("TAB_IN_EDITOR",			        {name:"zimbraPrefTabInEditorEnabled", type:ZmSetting.T_PREF, dataType:ZmSetting.D_BOOLEAN, defaultValue:false});
+	settings.registerSetting("USE_IMAP",						{name:"zimbraPrefUseImap", type:ZmSetting.T_PREF, dataType:ZmSetting.D_BOOLEAN, defaultValue:true});
+	settings.registerSetting("USE_POP",							{name:"zimbraPrefUsePop3", type:ZmSetting.T_PREF, dataType:ZmSetting.D_BOOLEAN, defaultValue:true});
     settings.registerSetting("USE_SEND_MSG_SHORTCUT",			{name:"zimbraPrefUseSendMsgShortcut", type:ZmSetting.T_PREF, dataType:ZmSetting.D_BOOLEAN, defaultValue:true, isGlobal:true});
     settings.registerSetting("USER_FOLDERS_ENABLED",			{type:ZmSetting.T_COS, dataType:ZmSetting.D_BOOLEAN, defaultValue:true});
     settings.registerSetting("VACATION_DURATION_ENABLED",		{type:ZmSetting.T_PREF, dataType:ZmSetting.D_BOOLEAN, defaultValue:false});
@@ -309,6 +314,8 @@ function() {
 				ZmSetting.OFFLINE_NOTIFY_NEWMAIL_ON_INBOX,
 				ZmSetting.OPEN_MAIL_IN_NEW_WIN,
 				ZmSetting.PAGE_SIZE,
+				ZmSetting.USE_POP,
+				ZmSetting.USE_IMAP,
 				ZmSetting.POP_DOWNLOAD_SINCE_VALUE,
 				ZmSetting.POP_DOWNLOAD_SINCE,
                 ZmSetting.POP_DELETE_OPTION,
@@ -560,6 +567,19 @@ function() {
 		displayName:		ZmMsg.openMailNewWin,
 		displayContainer:	ZmPref.TYPE_CHECKBOX,
 		precondition:		ZmSetting.DETACH_MAILVIEW_ENABLED
+	});
+
+
+	ZmPref.registerPref("USE_POP", {
+		displayName:		ZmMsg.popAccess,
+		displayContainer:	ZmPref.TYPE_CHECKBOX,
+		precondition:		[ZmSetting.POP_ENABLED, ZmSetting.CHANGE_USE_POP_ENABLED]
+	});
+
+	ZmPref.registerPref("USE_IMAP", {
+		displayName:		ZmMsg.imapAccess,
+		displayContainer:	ZmPref.TYPE_CHECKBOX,
+		precondition:		[ZmSetting.IMAP_ENABLED, ZmSetting.CHANGE_USE_IMAP_ENABLED]
 	});
 
 	ZmPref.registerPref("POP_DOWNLOAD_SINCE_VALUE", {
