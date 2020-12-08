@@ -614,22 +614,22 @@ and the container element is replaced with that control.
 		<$ } $>
 	<$ } $>
 
-	<$ if (data.isEnabled(ZmSetting.POP_ENABLED) || (data.isEnabled(ZmSetting.IMAP_ENABLED) && data.isEnabled(ZmSetting.CHANGE_USE_IMAP_ENABLED))) { $>
+	<$ if (data.isEnabled(ZmSetting.POP_ENABLED) || (data.isEnabled(ZmSetting.IMAP_ENABLED))) { $>
 		<div class='prefHeader'><$=ZmMsg.externalAccess$></div>
 		<table role="presentation" class='ZOptionsSectionTable' width=100%>
 			<tr>
 				<td class='ZOptionsSectionMain'>
 					<table role="presentation" width=100% class='ZPropertySheet' cellspacing='6'>
-						<$ if (data.isEnabled(ZmSetting.IMAP_ENABLED) && data.isEnabled(ZmSetting.CHANGE_USE_IMAP_ENABLED)) { $>
+						<$ if (data.isEnabled(ZmSetting.IMAP_ENABLED)) { $>
 							<tr>
 								<td class='ZOptionsLabel'><$=ZmMsg.imapAccessLabel$></td>
-								<td class='ZOptionsField'><div id='${id}_USE_IMAP' tabindex=0></div></td>
+								<td class='ZOptionsField'><div id='${id}_PREF_IMAP_ENABLED' tabindex=0></div></td>
 							</tr>
 						<$ } $>
 						<$ if (data.isEnabled(ZmSetting.POP_ENABLED) && data.isEnabled(ZmSetting.CHANGE_USE_POP_ENABLED)) { $>
 							<tr>
 								<td class='ZOptionsLabel'><$=ZmMsg.popAccessLabel$></td>
-								<td class='ZOptionsField'><div id='${id}_USE_POP' tabindex=0></div></td>
+								<td class='ZOptionsField'><div id='${id}_PREF_POP_ENABLED' tabindex=0></div></td>
 							</tr>
 						<$ } $>
 					</table>
