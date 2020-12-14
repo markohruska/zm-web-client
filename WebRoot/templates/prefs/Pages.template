@@ -626,7 +626,7 @@ and the container element is replaced with that control.
 								<td class='ZOptionsField'><div id='${id}_PREF_IMAP_ENABLED' tabindex=0></div></td>
 							</tr>
 						<$ } $>
-						<$ if (data.isEnabled(ZmSetting.POP_ENABLED) && data.isEnabled(ZmSetting.CHANGE_USE_POP_ENABLED)) { $>
+						<$ if (data.isEnabled(ZmSetting.POP_ENABLED)) { $>
 							<tr>
 								<td class='ZOptionsLabel'><$=ZmMsg.popAccessLabel$></td>
 								<td class='ZOptionsField'><div id='${id}_PREF_POP_ENABLED' tabindex=0></div></td>
